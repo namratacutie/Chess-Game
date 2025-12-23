@@ -11,13 +11,13 @@ const Chessboard = () => {
         for (let i = 0; i < xAxis.length; i++) {
             if ((i + j + 2) % 2 == 0) {
                 board.push(
-                    <div className="tile black-tile">[{xAxis[i]}{yAxis[j]}]</div>
+                    <div className="tile black-tile"></div>
                 )
             }
 
             else {
                 board.push(
-                    <div className="tile white-tile">[{xAxis[i]}{yAxis[j]}]</div>
+                    <div className="tile white-tile"></div>
                 )
             }
         }
