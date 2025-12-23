@@ -1,0 +1,40 @@
+.parent-clouds {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    top: -810px;
+    z-index: -10;
+    padding: 0;
+    margin: 0;
+}
+
+.cloud img {
+    height: 150px;
+}
+
+.parent-bigclouds {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    top: -930px;
+    z-index: -1;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.bigcloud img {
+    height: 250px;
+}
+
+.parent-earth img {
+    height: 200px;
+    position: relative;
+    top: -1150px;
+    left: 50px;
+    z-index: -100;
+}
