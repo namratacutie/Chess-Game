@@ -1,4 +1,6 @@
 .tiles {
+    display: grid;
+    place-content: center;
     height: 87.5px;
     width: 87.5px;
 }
@@ -8,5 +10,5 @@
 }
 
 .black-tiles {
-    background-color: #2c2b29;
+    background-color: #353534;
 }
