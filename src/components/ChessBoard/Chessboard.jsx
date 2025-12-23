@@ -1,5 +1,6 @@
 import React from 'react'
-import '../styles/Chessboard.css'
+import './Chessboard.css'
+import Tiles from '../Tiles/Tiles.jsx'
 
 const Chessboard = () => {
 
@@ -9,17 +10,8 @@ const Chessboard = () => {
 
     for (let j = yAxis.length - 1; j >= 0; j--) {
         for (let i = 0; i < xAxis.length; i++) {
-            if ((i + j + 2) % 2 == 0) {
-                board.push(
-                    <div className="tile black-tile"></div>
-                )
-            }
-
-            else {
-                board.push(
-                    <div className="tile white-tile"></div>
-                )
-            }
+            const number = i + j + 2;
+            board.push(<Tiles key={`${i}-${j}`} number={number} />)
         }
     }
 

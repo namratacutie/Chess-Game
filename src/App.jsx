@@ -1,6 +1,6 @@
 import React from 'react'
-import Chessboard from '../src/components/Chessboard.jsx'
-import '../src/App.css'
+import Chessboard from './components/ChessBoard/ChessBoard.jsx'
+import './App.css'
 
 const App = () => {
   return (

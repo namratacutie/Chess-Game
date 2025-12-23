@@ -1,0 +1,12 @@
+.tiles {
+    height: 87.5px;
+    width: 87.5px;
+}
+
+.white-tiles {
+    background-color: #F5C16C;
+}
+
+.black-tiles {
+    background-color: #2c2b29;
+}
