@@ -1,10 +1,14 @@
+.main-div {
+    position: relative;
+}
+
 .parent-clouds {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 20px;
-    position: relative;
-    top: -810px;
+    position: absolute;
+    top: -800px;
     z-index: -10;
     padding: 0;
     margin: 0;
@@ -18,23 +22,59 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
-    position: relative;
-    top: -930px;
+    gap: 0px;
+    position: absolute;
+    top: -790px;
     z-index: -1;
     padding: 0;
     margin: 0;
-    overflow: hidden;
 }
 
 .bigcloud img {
     height: 250px;
 }
 
-.parent-earth img {
-    height: 200px;
+.parent-earth {
     position: relative;
-    top: -1150px;
-    left: 50px;
+}
+
+.parent-earth img {
+    position: absolute;
+    height: 200px;
+    top: -750px;
+    left: 90px;
     z-index: -100;
+}
+
+.parent-comet {
+    position: relative;
+}
+
+.parent-comet img {
+    position: absolute;
+    top: -500px;
+    left: 1300px;
+    z-index: 100000;
+}
+
+.parent-astronaut {
+    position: relative;
+}
+
+.parent-astronaut img {
+    position: absolute;
+    top: -400px;
+    left: 1240px;
+    transform: rotate(20deg);
+}
+
+.parent-astronaut2 {
+    position: relative;
+}
+
+.parent-astronaut2 img {
+    position: absolute;
+    top: -300px;
+    left: 1300px;
+    transform: rotate(-20deg);
 }
