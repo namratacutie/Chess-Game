@@ -73,6 +73,13 @@ const useGameStore = create((set, get) => {
         gameStatus: getGameStatus(game),
         showPromotion: null, // { from, to } when pawn promotion is pending
 
+        // ─── Multiplayer State ──────────────────────
+        playerColor: null, // 'w' or 'b'
+        opponentName: 'Waiting...',
+        userRole: 'viewer', // 'white', 'black', 'viewer'
+        isMultiplayer: false,
+        roomId: null,
+
         // ─── Actions ────────────────────────────────
 
         /**
@@ -143,7 +150,7 @@ const useGameStore = create((set, get) => {
                 showPromotion: null,
             });
 
-            return true;
+            return { fen: game.fen(), move: { from: move.from, to: move.to, san: move.san } };
         },
 
         /**
@@ -152,8 +159,8 @@ const useGameStore = create((set, get) => {
         promoteWith: (piece) => {
             const state = get();
             const { showPromotion } = state;
-            if (!showPromotion) return;
-            get().executeMove(showPromotion.from, showPromotion.to, piece);
+            if (!showPromotion) return null;
+            return get().executeMove(showPromotion.from, showPromotion.to, piece);
         },
 
         /**
@@ -180,6 +187,36 @@ const useGameStore = create((set, get) => {
                 gameStatus: getGameStatus(newGame),
                 showPromotion: null,
             });
+        },
+
+        // ─── Multiplayer Actions ────────────────────
+
+        setPlayerColor: (color) => set({ playerColor: color, userRole: color === 'w' ? 'white' : 'black', isMultiplayer: true }),
+
+        setOpponentName: (name) => set({ opponentName: name }),
+
+        setRoomId: (id) => set({ roomId: id, isMultiplayer: !!id }),
+
+        /**
+         * Sync local state from remote data (Firestore snapshot)
+         */
+        syncFromRemote: (data) => {
+            const state = get();
+            const { game } = state;
+
+            // Only sync if the FEN is different (ignore our own updates)
+            if (data.fen !== game.fen()) {
+                game.load(data.fen);
+                const status = getGameStatus(game);
+
+                set({
+                    board: getBoardState(game),
+                    turn: status.turn,
+                    moveHistory: getVerboseHistory(game),
+                    gameStatus: status,
+                    lastMove: data.history?.length > 0 ? data.history[data.history.length - 1] : null,
+                });
+            }
         },
 
         // ─── Computed Helpers ─────────────────────────

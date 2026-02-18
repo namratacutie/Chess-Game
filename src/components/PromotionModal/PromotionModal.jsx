@@ -7,6 +7,7 @@
 import React from 'react'
 import './PromotionModal.css'
 import useGameStore, { getPieceImage } from '../../store/gameStore.js'
+import useMultiplayer from '../../hooks/useMultiplayer'
 
 const PROMOTION_PIECES = ['q', 'r', 'b', 'n']
 const PIECE_NAMES = { q: 'Queen', r: 'Rook', b: 'Bishop', n: 'Knight' }
@@ -14,6 +15,17 @@ const PIECE_NAMES = { q: 'Queen', r: 'Rook', b: 'Bishop', n: 'Knight' }
 const PromotionModal = ({ color }) => {
     const promoteWith = useGameStore(s => s.promoteWith)
     const cancelPromotion = useGameStore(s => s.cancelPromotion)
+    const roomId = useGameStore(s => s.roomId)
+    const isMultiplayer = useGameStore(s => s.isMultiplayer)
+
+    const { makeRemoteMove } = useMultiplayer(roomId)
+
+    const handlePromote = async (piece) => {
+        const result = promoteWith(piece);
+        if (result && isMultiplayer) {
+            await makeRemoteMove(result.fen, result.move);
+        }
+    }
 
     return (
         <div className="promotion-overlay" onClick={cancelPromotion}>
@@ -25,7 +37,7 @@ const PromotionModal = ({ color }) => {
                         <button
                             key={piece}
                             className="promotion-piece-btn"
-                            onClick={() => promoteWith(piece)}
+                            onClick={() => handlePromote(piece)}
                             title={PIECE_NAMES[piece]}
                         >
                             <img

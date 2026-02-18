@@ -1,0 +1,140 @@
+/* Login.css - Mars Authentication UI */
+
+.login-page {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.login-card {
+    background: rgba(26, 10, 10, 0.8);
+    backdrop-filter: blur(15px);
+    border: 2px solid var(--nebula-glow, #ff9f1c);
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: 0 0 50px rgba(255, 159, 28, 0.3);
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.login-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--stardust-gold);
+    background: linear-gradient(to bottom, var(--nebula-orange), var(--mars-red));
+    -webkit-background-clip: text;
+    background-clip: text;
+    letter-spacing: 5px;
+    margin-bottom: 10px;
+}
+
+.login-subtitle {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--stardust-gold);
+    opacity: 0.7;
+    margin-bottom: 40px;
+}
+
+.login-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.btn-google,
+.btn-guest {
+    background: transparent;
+    border: 1px solid rgba(255, 159, 28, 0.3);
+    color: white;
+    padding: 15px;
+    border-radius: 12px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-google:hover,
+.btn-guest:hover {
+    background: rgba(255, 159, 28, 0.1);
+    border-color: var(--nebula-glow);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 159, 28, 0.2);
+}
+
+.btn-icon {
+    font-size: 18px;
+    opacity: 0.8;
+}
+
+.login-error {
+    background: rgba(156, 46, 53, 0.2);
+    border: 1px solid var(--mars-red);
+    color: #ff9999;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+.login-footer {
+    margin-top: 40px;
+    font-size: 9px;
+    opacity: 0.4;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Auth Loading State for ProtectedRoute */
+.auth-loading {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--deep-space);
+}
+
+.auth-loading p {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: var(--nebula-glow);
+    margin-top: 20px;
+    animation: flash 1s infinite alternate;
+}
+
+@keyframes flash {
+    from {
+        opacity: 0.3;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

@@ -1,17 +1,30 @@
 /**
- * ProtectedRoute.jsx — Authentication Route Guard
+ * ProtectedRoute.jsx
  * 
- * Redirects unauthenticated users to the Login page.
- * Wraps routes that require authentication.
- * 
- * @module components/ProtectedRoute
+ * Guards routes that require authentication.
  */
 
-import React from 'react'
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
 const ProtectedRoute = ({ children }) => {
-    // TODO: Implement auth check in Phase 2
-    return children
-}
+    const { user, loading } = useAuth();
 
-export default ProtectedRoute
+    if (loading) {
+        return (
+            <div className="auth-loading">
+                <div className="scanner-line"></div>
+                <p>IDENTIFYING COMMANDER...</p>
+            </div>
+        );
+    }
+
+    if (!user) {
+        return <Navigate to="/login" replace />;
+    }
+
+    return children;
+};
+
+export default ProtectedRoute;

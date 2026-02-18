@@ -1,25 +1,105 @@
 /**
- * Home.jsx — Landing / Lobby Page
+ * Home.jsx
  * 
- * Features:
- * - "Play Online" → create game room
- * - "Join Game" → enter invite code
- * - "Play vs Bot" → local AI game
- * - Player profile card
- * - Mars-themed hero section
- * 
- * @module pages/Home
+ * Game Lobby / Dashboard.
  */
 
-import React from 'react'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { createRoom, joinRoom } from '../services/gameService';
+import { auth } from '../services/firebase';
+import './Home.css';
 
 const Home = () => {
+    const navigate = useNavigate();
+    const [roomCode, setRoomCode] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const user = auth.currentUser;
+
+    const handleCreateGame = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const roomId = await createRoom(user.uid, user.displayName || `Player ${user.uid.slice(0, 4)}`);
+            navigate(`/game/${roomId}`);
+        } catch (err) {
+            setError("Failed to create mission.");
+            setLoading(false);
+        }
+    };
+
+    const handleJoinGame = async (e) => {
+        e.preventDefault();
+        if (!roomCode.trim()) return;
+
+        setLoading(true);
+        setError(null);
+        try {
+            await joinRoom(roomCode.trim().toUpperCase(), user.uid, user.displayName || `Player ${user.uid.slice(0, 4)}`);
+            navigate(`/game/${roomCode.trim().toUpperCase()}`);
+        } catch (err) {
+            setError(err.message);
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="home-page">
-            {/* TODO: Implement in Phase 3 */}
-            <h1>Mars Chess</h1>
-        </div>
-    )
-}
+            <div className="home-container">
+                <header className="home-header">
+                    <h1 className="home-title">MISSION CONTROL</h1>
+                    <p className="home-user">COMMANDER: {user?.displayName || 'GUEST'}</p>
+                </header>
 
-export default Home
+                {error && <div className="home-error">{error}</div>}
+
+                <div className="home-grid">
+                    <div className="home-card create-card">
+                        <h3>INITIALIZE NEW MISSION</h3>
+                        <p>Generate a unique mission code and wait for an opponent.</p>
+                        <button
+                            className="btn-action btn-create"
+                            onClick={handleCreateGame}
+                            disabled={loading}
+                        >
+                            {loading ? 'INITIALIZING...' : 'START NEW MISSION'}
+                        </button>
+                    </div>
+
+                    <div className="home-card join-card">
+                        <h3>JOIN MISSION</h3>
+                        <p>Enter a mission code provided by another commander.</p>
+                        <form onSubmit={handleJoinGame} className="join-form">
+                            <input
+                                type="text"
+                                placeholder="ENTER MISSION ID"
+                                value={roomCode}
+                                onChange={(e) => setRoomCode(e.target.value)}
+                                className="room-input"
+                                maxLength={6}
+                                disabled={loading}
+                            />
+                            <button
+                                type="submit"
+                                className="btn-action btn-join"
+                                disabled={loading || !roomCode}
+                            >
+                                {loading ? 'SYNCING...' : 'SYNC WITH MISSION'}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div className="home-footer">
+                    <button className="btn-logout" onClick={() => auth.signOut()}>
+                        TERMINATE SESSION
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Home;

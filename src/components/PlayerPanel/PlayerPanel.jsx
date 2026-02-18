@@ -8,18 +8,28 @@ import React from 'react'
 import './PlayerPanel.css'
 import useGameStore, { getPieceImage } from '../../store/gameStore.js'
 
-const PlayerPanel = ({ color }) => {
+const PlayerPanel = ({ color, isOpponent }) => {
     const turn = useGameStore(s => s.turn)
     const captured = useGameStore(s => s.capturedPieces[color])
+    const opponentName = useGameStore(s => s.opponentName)
+    const playerColor = useGameStore(s => s.playerColor)
+    const isMultiplayer = useGameStore(s => s.isMultiplayer)
 
     const isPlayerTurn = turn === color
-    const playerName = color === 'w' ? 'COMMANDER (WHITE)' : 'OPPONENT (BLACK)'
+
+    let playerName = color === 'w' ? 'COMMANDER (WHITE)' : 'OPPONENT (BLACK)'
+    if (isMultiplayer) {
+        if (isOpponent) {
+            playerName = opponentName.toUpperCase()
+        } else {
+            playerName = "YOU (COMMANDER)"
+        }
+    }
 
     return (
         <div className={`player-panel ${color} ${isPlayerTurn ? 'active' : ''}`}>
             <div className="player-info">
                 <div className="player-avatar">
-                    {/* Placeholder avatar or initial */}
                     {color === 'w' ? '👨‍🚀' : '👽'}
                 </div>
                 <div className="player-meta">

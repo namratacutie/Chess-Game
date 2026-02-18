@@ -116,6 +116,48 @@ body {
   }
 }
 
+.mission-status-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+
+.mission-badge {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  color: var(--stardust-gold);
+  background: rgba(245, 193, 108, 0.1);
+  border: 1px solid rgba(245, 193, 108, 0.2);
+  padding: 4px 12px;
+  border-radius: 4px;
+  letter-spacing: 2px;
+}
+
+.mission-controls {
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-abort {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid rgba(156, 46, 46, 0.4);
+  color: #ff9999;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: all 0.3s;
+}
+
+.btn-abort:hover {
+  background: rgba(156, 46, 46, 0.1);
+  border-color: var(--mars-red);
+}
+
 /* Custom Scrollbar - Minimalist */
 ::-webkit-scrollbar {
   width: 3px;
