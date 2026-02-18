@@ -21,8 +21,6 @@ const App = () => {
 
   return (
     <div className="app">
-      <h1 className="main-title">MARS CHESS</h1>
-
       <main className="game-container">
         <div className="game-main-area">
           <PlayerPanel color="b" />
@@ -31,6 +29,7 @@ const App = () => {
         </div>
 
         <aside className="game-sidebar">
+          <h1 className="main-title">MARS CHESS</h1>
           <MoveHistory />
         </aside>
       </main>

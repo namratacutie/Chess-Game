@@ -1,164 +1,70 @@
-/* Chessboard.css - Mars/Astrology Theme Styling */
-
-:root {
-    --mars-red: #9c2e35;
-    --mars-dust: #8b3a2f;
-    --obsidian-dark: #1a0a0a;
-    --nebula-glow: #ff9f1c;
-    --glass-bg: rgba(26, 10, 10, 0.8);
-    --text-gold: #f5c16c;
-}
+/* Chessboard.css - Strictly Viewport Constrained */
 
 .chess-board-wrapper {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 40px;
-    background: radial-gradient(circle at center, rgba(156, 46, 53, 0.2) 0%, transparent 70%);
-    border-radius: 20px;
-    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    max-height: 100%;
+    overflow: hidden;
 }
 
 .board-with-ranks {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
 }
 
 .chess-board {
     display: grid;
-    grid-template-columns: repeat(8, 70px);
-    grid-template-rows: repeat(8, 70px);
-    border: 8px solid #2a1010;
-    border-radius: 8px;
+    /* Use vmin but slightly lower to ensure player panels don't overflow vertically */
+    grid-template-columns: repeat(8, calc(min(70vw, 70vh, 550px) / 8));
+    grid-template-rows: repeat(8, calc(min(70vw, 70vh, 550px) / 8));
+
+    border: 4px solid #2a1010;
+    border-radius: 4px;
     box-shadow:
-        0 0 0 4px var(--nebula-glow),
-        0 10px 40px rgba(0, 0, 0, 0.8),
-        inset 0 0 20px rgba(0, 0, 0, 0.5);
+        0 0 0 2px var(--nebula-glow),
+        0 10px 30px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     position: relative;
 }
 
-/* Coordinate Labels */
+/* Coordinate Labels - Perfectly Aligned */
 .board-files {
     display: flex;
-    padding-left: 30px;
-    /* Offset for ranks */
-    margin-bottom: 5px;
+    /* Match the board width calculation exactly */
+    width: calc(min(70vw, 70vh, 550px));
+    padding-left: 1.5rem;
+    /* Space for ranks */
+    box-sizing: border-box;
 }
 
 .file-label {
-    width: 70px;
+    flex: 1;
     text-align: center;
     color: var(--text-gold);
     font-family: 'Orbitron', sans-serif;
-    font-weight: 600;
-    font-size: 11px;
+    font-size: clamp(8px, 1.2vw, 10px);
     text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 0 5px var(--nebula-glow);
 }
 
 .board-ranks {
     display: flex;
     flex-direction: column;
-    margin-right: 10px;
+    /* Match the board height calculation exactly */
+    height: calc(min(70vw, 70vh, 550px));
+    justify-content: space-around;
+    padding: 0 8px;
 }
 
 .rank-label {
-    height: 70px;
+    flex: 1;
     display: flex;
     align-items: center;
+    justify-content: center;
     color: var(--text-gold);
     font-family: 'Orbitron', sans-serif;
-    font-weight: 600;
-    font-size: 11px;
-    text-shadow: 0 0 5px var(--nebula-glow);
-}
-
-/* Game Over Overlay */
-.game-over-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(8px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-    animation: fadeIn 0.4s ease-out;
-}
-
-.game-over-card {
-    background: var(--glass-bg);
-    border: 2px solid var(--nebula-glow);
-    border-radius: 20px;
-    padding: 40px;
-    text-align: center;
-    box-shadow: 0 0 30px var(--nebula-glow);
-    transform: translateY(0);
-    animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.game-over-title {
-    color: var(--nebula-glow);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 32px;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-}
-
-.game-over-message {
-    color: white;
-    font-size: 18px;
-    margin-bottom: 30px;
-    opacity: 0.9;
-}
-
-.btn-rematch {
-    background: transparent;
-    border: 2px solid var(--nebula-glow);
-    color: var(--nebula-glow);
-    padding: 12px 30px;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 600;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 50px;
-    letter-spacing: 2px;
-}
-
-.btn-rematch:hover {
-    background: var(--nebula-glow);
-    color: black;
-    box-shadow: 0 0 20px var(--nebula-glow);
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    font-size: clamp(8px, 1.2vw, 10px);
 }
 
 /* Piece sizes fitting */
@@ -166,11 +72,4 @@
     width: 85%;
     height: 85%;
     object-fit: contain;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
-    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    user-select: none;
-}
-
-.tile:hover .tile__piece {
-    transform: scale(1.1);
 }

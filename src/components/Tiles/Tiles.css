@@ -1,143 +1,53 @@
-/* Tiles.css - Mars Dust & Obsidian Obsidian Theme */
+/* Tiles.css - Fluid Sizing */
 
 .tile {
-    width: 70px;
-    height: 70px;
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     cursor: pointer;
-    transition: all 0.2s ease;
 }
 
-/* Light Tiles - Mars Dust Surface */
+/* Surface textures */
 .tile--light {
     background: linear-gradient(135deg, #cc4e41 0%, #8b3a2f 100%);
-    position: relative;
 }
 
-.tile--light::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('https://www.transparenttextures.com/patterns/dust.png');
-    opacity: 0.1;
-    pointer-events: none;
-}
-
-/* Dark Tiles - Deep Space/Obsidian */
 .tile--dark {
-    background: linear-gradient(135deg, #1a0a0a 0%, #000000 100%);
+    background: linear-gradient(135deg, #4a4a4a 0%, #2b2b2b 100%);
 }
 
-.tile--dark::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
-    opacity: 0.05;
-    pointer-events: none;
-}
-
-/* State Highlights */
 .tile--selected {
-    background: radial-gradient(circle, rgba(255, 159, 28, 0.6) 0%, transparent 100%),
-        linear-gradient(135deg, #ff9f1c 0%, #ffbf69 100%);
-    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.4);
-    z-index: 2;
+    background: var(--nebula-glow);
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.4);
 }
 
-/* Valid move indicator */
-
-/* Last Move Highlighting */
 .tile--last-from {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .tile--last-to {
-    background: rgba(255, 255, 255, 0.25);
-    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2);
 }
 
-/* Check State */
 .tile--check {
-    background: radial-gradient(circle, #ff0000 0%, transparent 100%),
-        linear-gradient(135deg, #3d0000 0%, #1a0000 100%) !important;
-    animation: pulsingCheck 1s infinite alternate;
+    background: #ff0000;
+    box-shadow: inset 0 0 20px #000;
 }
 
-@keyframes pulsingCheck {
-    from {
-        box-shadow: inset 0 0 10px #ff0000;
-    }
-
-    to {
-        box-shadow: inset 0 0 30px #ff0000;
-    }
-}
-
-/* Indicators */
+/* Indicators scaled by tile size */
 .tile__move-dot {
-    width: 20px;
-    height: 20px;
-    background: rgba(255, 255, 255, 0.4);
+    width: 25%;
+    height: 25%;
+    background: rgba(255, 255, 255, 0.6);
     border-radius: 50%;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
-    pointer-events: none;
-    animation: glowMove 1.5s infinite;
 }
 
 .tile__capture-ring {
-    width: 65px;
-    height: 65px;
-    border: 4px solid rgba(255, 255, 255, 0.4);
+    width: 80%;
+    height: 80%;
+    border: 2px solid rgba(255, 255, 255, 0.4);
     border-radius: 50%;
-    pointer-events: none;
-    animation: glowCapture 1.5s infinite;
-}
-
-@keyframes glowMove {
-    0% {
-        transform: scale(1);
-        opacity: 0.4;
-    }
-
-    50% {
-        transform: scale(1.2);
-        opacity: 0.6;
-    }
-
-    100% {
-        transform: scale(1);
-        opacity: 0.4;
-    }
-}
-
-@keyframes glowCapture {
-    0% {
-        transform: scale(1);
-        border-color: rgba(255, 255, 255, 0.4);
-    }
-
-    50% {
-        transform: scale(1.05);
-        border-color: rgba(255, 159, 28, 0.6);
-    }
-
-    100% {
-        transform: scale(1);
-        border-color: rgba(255, 255, 255, 0.4);
-    }
-}
-
-/* Piece dragging state (if we add DnD) */
-.tile--dragging {
-    opacity: 0.4;
 }
