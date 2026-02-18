@@ -1,5 +1,98 @@
+/* App.css - Global Mars Project Styles */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --mars-red: #9c2e35;
+  --mars-dark: #1a0a0a;
+  --nebula-orange: #ff9f1c;
+  --stardust-gold: #f5c16c;
+  --deep-space: #050505;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--deep-space);
+  color: white;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
 .app {
-  display: grid;
-  place-content: center;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+  background: radial-gradient(circle at center, rgba(156, 46, 53, 0.15) 0%, transparent 80%);
+  padding: 10px 20px;
+  overflow: hidden;
+  /* Prevent body scroll if possible */
+}
+
+.game-container {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  max-width: 1400px;
+  width: 100%;
+  justify-content: center;
+  flex-grow: 1;
+  /* Take up available space */
+  max-height: calc(100vh - 120px);
+  /* Leave room for title */
+}
+
+.game-main-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  height: 100%;
+  justify-content: center;
+}
+
+.game-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  padding: 20px 0;
+}
+
+.main-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
+  /* Reduced from 4rem */
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 10px;
+  margin-bottom: 20px;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--stardust-gold);
+  background: linear-gradient(to bottom, var(--nebula-orange), var(--mars-red));
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(255, 159, 28, 0.3);
+  text-align: center;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--deep-space);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--mars-red);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--nebula-orange);
 }

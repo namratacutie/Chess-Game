@@ -1,2 +1,99 @@
-/* PromotionModal.css — Mars-themed promotion modal styles */
-/* TODO: Implement in Phase 1 */
+/* PromotionModal.css - Astrology Theme */
+
+.promotion-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.promotion-card {
+    background: rgba(26, 10, 10, 0.9);
+    border: 2px solid var(--nebula-glow, #ff9f1c);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 0 50px rgba(255, 159, 28, 0.3);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.promotion-title {
+    color: var(--nebula-glow, #ff9f1c);
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+    font-size: 24px;
+}
+
+.promotion-subtitle {
+    color: #f5c16c;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    opacity: 0.8;
+    margin-bottom: 40px;
+}
+
+.promotion-pieces {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.promotion-piece-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100px;
+}
+
+.promotion-piece-btn:hover {
+    background: rgba(255, 159, 28, 0.15);
+    border-color: rgba(255, 159, 28, 0.5);
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.promotion-piece-img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+.promotion-piece-label {
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

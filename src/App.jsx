@@ -1,6 +1,8 @@
 import React from 'react'
-import Chessboard from './components/ChessBoard/ChessBoard.jsx'
+import Chessboard from './components/ChessBoard/Chessboard.jsx'
 import Sky from './components/Sky/Sky.jsx'
+import PlayerPanel from './components/PlayerPanel/PlayerPanel.jsx'
+import MoveHistory from './components/MoveHistory/MoveHistory.jsx'
 import './App.css'
 import Lenis from 'lenis'
 
@@ -18,10 +20,21 @@ const App = () => {
   requestAnimationFrame(raf);
 
   return (
-    <div>
-      <div className="app">
-        <Chessboard />
-      </div>
+    <div className="app">
+      <h1 className="main-title">MARS CHESS</h1>
+
+      <main className="game-container">
+        <div className="game-main-area">
+          <PlayerPanel color="b" />
+          <Chessboard />
+          <PlayerPanel color="w" />
+        </div>
+
+        <aside className="game-sidebar">
+          <MoveHistory />
+        </aside>
+      </main>
+
       <Sky />
     </div>
   )

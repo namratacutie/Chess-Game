@@ -1,62 +1,123 @@
 /**
  * Chessboard.jsx - Chess Board Component
  * 
- * This component renders the 8x8 chess board with all 64 tiles.
- * It handles the board layout and places pieces in their initial positions.
+ * Renders the 8x8 chess board using game state from Zustand store.
+ * Handles piece selection and move execution via click-to-move.
  */
 
 import React from 'react'
-import './Chessboard.css'                                           // Chessboard-specific styles
-import Tiles from '../Tiles/Tiles.jsx'                              // Individual tile component
-import { InitialPosition } from '../InitialPosition/InitialPosition.jsx'  // Initial piece positions
+import './Chessboard.css'
+import Tiles from '../Tiles/Tiles.jsx'
+import PromotionModal from '../PromotionModal/PromotionModal.jsx'
+import useGameStore, { getPieceImage, toSquare } from '../../store/gameStore.js'
 
-/**
- * Chessboard Component
- * 
- * Generates the chess board by creating 64 Tile components arranged in an 8x8 grid.
- * The board is rendered from top to bottom (row 8 to row 1) and left to right (a to h).
- * 
- * @returns {JSX.Element} The rendered chessboard with all tiles and pieces
- */
 const Chessboard = () => {
+    const board = useGameStore(s => s.board)
+    const selectedSquare = useGameStore(s => s.selectedSquare)
+    const validMoves = useGameStore(s => s.validMoves)
+    const lastMove = useGameStore(s => s.lastMove)
+    const gameStatus = useGameStore(s => s.gameStatus)
+    const showPromotion = useGameStore(s => s.showPromotion)
+    const selectSquare = useGameStore(s => s.selectSquare)
+    const getCheckSquare = useGameStore(s => s.getCheckSquare)
 
-    // Chess notation: columns are labeled a-h, rows are labeled 1-8
-    const xAxis = ["a", "b", "c", "d", "e", "f", "g", "h"]  // Column labels (files)
-    const yAxis = ["1", "2", "3", "4", "5", "6", "7", "8"]  // Row labels (ranks)
+    const checkSquare = getCheckSquare()
 
-    let board = []  // Array to store all 64 Tile components
+    // Build the board tiles from the chess.js 2D array
+    // board[row][col]: row 0 = rank 8, col 0 = file a
+    let tiles = []
 
-    // Loop through rows from top (8) to bottom (1)
-    // j starts at 7 (index for "8") and goes down to 0 (index for "1")
-    for (let j = yAxis.length - 1; j >= 0; j--) {
-        // Loop through columns from left (a) to right (h)
-        for (let i = 0; i < xAxis.length; i++) {
+    for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+            const square = toSquare(col, row)
+            const piece = board[row][col]
+            const image = piece ? getPieceImage(piece.color, piece.type) : null
 
-            // Calculate tile color: alternating pattern based on sum of indices
-            // Even sum = black tile, odd sum = white tile
-            const number = i + j + 2;
+            // Tile color: (row + col) even = light, odd = dark
+            const isLight = (row + col) % 2 === 0
 
-            // Create position string like "a1", "e4", "h8" etc.
-            const position = `${xAxis[i]}${yAxis[j]}`;
+            // Highlight states
+            const isSelected = selectedSquare === square
+            const isValidMove = validMoves.includes(square)
+            const isLastMoveFrom = lastMove?.from === square
+            const isLastMoveTo = lastMove?.to === square
+            const isCheck = checkSquare === square
 
-            // Get the piece image for this position from InitialPosition object
-            // Returns null if no piece exists at this position
-            const image = InitialPosition[position] || null;
-
-            // Create a Tile component and add it to the board array
-            board.push(
+            tiles.push(
                 <Tiles
-                    key={position}       // Unique key for React's reconciliation
-                    number={number}     // Used to determine tile color
-                    image={image}       // Piece image (if any)
+                    key={square}
+                    square={square}
+                    image={image}
+                    isLight={isLight}
+                    isSelected={isSelected}
+                    isValidMove={isValidMove}
+                    isLastMoveFrom={isLastMoveFrom}
+                    isLastMoveTo={isLastMoveTo}
+                    isCheck={isCheck}
+                    hasPiece={!!piece}
+                    onClick={() => selectSquare(square)}
                 />
-            );
+            )
         }
     }
 
-    // Render the board container with all tiles
     return (
-        <div className="chess-board">{board}</div>
+        <div className="chess-board-wrapper">
+            {/* Board coordinate labels */}
+            <div className="board-files">
+                {['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].map(f => (
+                    <span key={f} className="file-label">{f}</span>
+                ))}
+            </div>
+            <div className="board-with-ranks">
+                <div className="board-ranks">
+                    {[8, 7, 6, 5, 4, 3, 2, 1].map(r => (
+                        <span key={r} className="rank-label">{r}</span>
+                    ))}
+                </div>
+                <div className="chess-board">{tiles}</div>
+            </div>
+
+            {/* Game status overlay */}
+            {gameStatus.isGameOver && (
+                <GameOverOverlay status={gameStatus} />
+            )}
+
+            {/* Pawn promotion modal */}
+            {showPromotion && (
+                <PromotionModal
+                    color={useGameStore.getState().turn === 'b' ? 'w' : 'b'}
+                />
+            )}
+        </div>
+    )
+}
+
+/**
+ * Game Over Overlay — shown when game ends
+ */
+const GameOverOverlay = ({ status }) => {
+    const resetGame = useGameStore(s => s.resetGame)
+
+    let message = ''
+    if (status.isCheckmate) {
+        message = `Checkmate! ${status.turn === 'w' ? 'Black' : 'White'} wins! 🏆`
+    } else if (status.isStalemate) {
+        message = 'Stalemate! It\'s a draw 🤝'
+    } else if (status.isDraw) {
+        message = 'Draw! 🤝'
+    }
+
+    return (
+        <div className="game-over-overlay">
+            <div className="game-over-card">
+                <h2 className="game-over-title">Game Over</h2>
+                <p className="game-over-message">{message}</p>
+                <button className="btn-rematch" onClick={resetGame}>
+                    ⟳ New Game
+                </button>
+            </div>
+        </div>
     )
 }
 

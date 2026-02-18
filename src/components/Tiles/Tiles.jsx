@@ -1,27 +1,57 @@
+/**
+ * Tiles.jsx — Individual Board Tile
+ * 
+ * Renders a single chess square with:
+ * - Mars-themed light/dark coloring
+ * - Piece image (if occupied)
+ * - Visual indicators: selected, valid move, last move, check
+ */
+
 import React from 'react'
 import './Tiles.css'
 
-const Tiles = ({ number, image }) => {
+const Tiles = ({
+    square,
+    image,
+    isLight,
+    isSelected,
+    isValidMove,
+    isLastMoveFrom,
+    isLastMoveTo,
+    isCheck,
+    hasPiece,
+    onClick,
+}) => {
+    // Build CSS class list
+    const classNames = [
+        'tile',
+        isLight ? 'tile--light' : 'tile--dark',
+        isSelected && 'tile--selected',
+        isLastMoveFrom && 'tile--last-from',
+        isLastMoveTo && 'tile--last-to',
+        isCheck && 'tile--check',
+    ].filter(Boolean).join(' ')
 
-    // Determine tile color based on the number
-    // Even numbers create black tiles, odd numbers create white tiles
-    // This creates the classic checkerboard pattern
-    if (number % 2 === 0) {
-        return (
-            <div className="tiles black-tiles">
-                {/* Render piece image only if one exists on this tile */}
-                {image && <img src={image} alt="piece" />}
-            </div>
-        )
-    }
-    else {
-        return (
-            <div className="tiles white-tiles">
-                {/* Render piece image only if one exists on this tile */}
-                {image && <img src={image} alt="piece" />}
-            </div>
-        )
-    }
+    return (
+        <div className={classNames} onClick={onClick} data-square={square}>
+            {/* Valid move indicator */}
+            {isValidMove && (
+                hasPiece
+                    ? <div className="tile__capture-ring" />
+                    : <div className="tile__move-dot" />
+            )}
+
+            {/* Piece image */}
+            {image && (
+                <img
+                    src={image}
+                    alt={square}
+                    className="tile__piece"
+                    draggable={false}
+                />
+            )}
+        </div>
+    )
 }
 
-export default Tiles
+export default React.memo(Tiles)

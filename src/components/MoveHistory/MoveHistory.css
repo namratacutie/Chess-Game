@@ -1,2 +1,84 @@
-/* MoveHistory.css — Mars-themed move history styles */
-/* TODO: Implement in Phase 3 */
+/* MoveHistory.css */
+
+.move-history-panel {
+    background: rgba(26, 10, 10, 0.6);
+    border: 1px solid rgba(255, 159, 28, 0.2);
+    border-radius: 12px;
+    width: 240px;
+    height: 100%;
+    max-height: 560px;
+    /* Matches board height approx */
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    margin-left: 10px;
+}
+
+.history-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    color: var(--nebula-glow, #ff9f1c);
+    letter-spacing: 3px;
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 159, 28, 0.2);
+    padding-bottom: 15px;
+}
+
+.moves-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 5px;
+}
+
+.move-row {
+    display: flex;
+    justify-content: space-around;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    padding: 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.round-number {
+    color: rgba(255, 255, 255, 0.3);
+    width: 30px;
+}
+
+.move-san {
+    width: 60px;
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.move-san.white {
+    color: #fff;
+}
+
+.move-san.black {
+    color: #aaa;
+}
+
+.no-moves {
+    text-align: center;
+    margin-top: 50px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    opacity: 0.4;
+    letter-spacing: 2px;
+}
+
+/* Scrollbar styling for list */
+.moves-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.moves-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 159, 28, 0.3);
+    border-radius: 10px;
+}
