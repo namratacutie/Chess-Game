@@ -49,14 +49,19 @@ const Home = () => {
         <div className="home-page">
             <div className="home-container">
                 <header className="home-header">
+                    <div className="hud-line-top"></div>
                     <h1 className="home-title">MISSION CONTROL</h1>
-                    <p className="home-user">COMMANDER: {user?.displayName || 'GUEST'}</p>
+                    <div className="home-user-badge">
+                        <span className="user-icon">👤</span>
+                        <span className="home-user">COMMANDER: {user?.displayName || 'GUEST'}</span>
+                    </div>
                 </header>
 
                 {error && <div className="home-error">{error}</div>}
 
                 <div className="home-grid">
                     <div className="home-card create-card">
+                        <div className="card-hud">01</div>
                         <h3>INITIALIZE NEW MISSION</h3>
                         <p>Generate a unique mission code and wait for an opponent.</p>
                         <button
@@ -69,6 +74,7 @@ const Home = () => {
                     </div>
 
                     <div className="home-card join-card">
+                        <div className="card-hud">02</div>
                         <h3>JOIN MISSION</h3>
                         <p>Enter a mission code provided by another commander.</p>
                         <form onSubmit={handleJoinGame} className="join-form">
@@ -89,6 +95,16 @@ const Home = () => {
                                 {loading ? 'SYNCING...' : 'SYNC WITH MISSION'}
                             </button>
                         </form>
+                    </div>
+                </div>
+
+                <div className="home-status-bar">
+                    <div className="status-item">
+                        <span className="dot pulse"></span>
+                        SYSTEMS: OPTIMAL
+                    </div>
+                    <div className="status-item">
+                        LOCATION: JEZERO CRATER
                     </div>
                 </div>
 
