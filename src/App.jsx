@@ -1,3 +1,4 @@
+import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Chessboard from './components/ChessBoard/Chessboard.jsx'
 import Sky from './components/Sky/Sky.jsx'
