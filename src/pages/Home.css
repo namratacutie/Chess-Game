@@ -74,6 +74,16 @@
     position: relative;
 }
 
+.hud-line-top {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--nebula-glow), transparent);
+}
+
 .home-title {
     font-family: 'Orbitron', sans-serif;
     font-size: 2.8rem;
@@ -103,6 +113,13 @@
     filter: drop-shadow(0 0 5px var(--nebula-glow));
 }
 
+.home-user {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    color: var(--stardust-gold);
+    letter-spacing: 2px;
+}
+
 .card-hud {
     position: absolute;
     top: 15px;
@@ -112,6 +129,150 @@
     color: var(--stardust-gold);
     opacity: 0.3;
     letter-spacing: 2px;
+}
+
+/* Home Grid & Cards */
+.home-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+@media (max-width: 768px) {
+    .home-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.home-card {
+    background: rgba(255, 159, 28, 0.03);
+    border: 1px solid rgba(255, 159, 28, 0.1);
+    border-radius: 24px;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.home-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 159, 28, 0.4);
+    background: rgba(255, 159, 28, 0.05);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.home-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: var(--stardust-gold);
+    margin: 0;
+}
+
+.home-card p {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Button & Form UI */
+.btn-action {
+    width: 100%;
+    margin-top: 10px;
+    padding: 16px;
+    border-radius: 12px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+    text-transform: uppercase;
+}
+
+.btn-create {
+    background: linear-gradient(135deg, var(--mars-red), #e63946);
+    color: white;
+    box-shadow: 0 4px 15px rgba(156, 46, 53, 0.4);
+}
+
+.btn-create:hover:not(:disabled) {
+    filter: brightness(1.2);
+    box-shadow: 0 6px 20px rgba(156, 46, 53, 0.6);
+}
+
+.btn-join {
+    background: transparent;
+    border: 1px solid var(--nebula-glow);
+    color: var(--nebula-glow);
+}
+
+.btn-join:hover:not(:disabled) {
+    background: rgba(255, 159, 28, 0.1);
+    box-shadow: 0 0 20px rgba(255, 159, 28, 0.2);
+}
+
+.btn-action:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(1);
+}
+
+.join-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.room-input {
+    width: 100%;
+    padding: 14px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 159, 28, 0.2);
+    border-radius: 10px;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 8px;
+    transition: all 0.3s;
+}
+
+.room-input:focus {
+    outline: none;
+    border-color: var(--nebula-glow);
+    background: rgba(255, 159, 28, 0.05);
+}
+
+.home-footer {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-logout {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.4);
+    padding: 10px 24px;
+    border-radius: 100px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-logout:hover {
+    color: #ff9999;
+    border-color: var(--mars-red);
+    background: rgba(156, 46, 53, 0.05);
 }
 
 .home-status-bar {
