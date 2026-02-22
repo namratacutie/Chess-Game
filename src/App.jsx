@@ -53,7 +53,7 @@ const GameRoom = () => {
         </div>
         <MoveHistory />
         <div className="mission-controls">
-          <button className="btn-abort" onClick={() => window.location.href = '/'}>ABORT MISSION</button>
+          <button className="btn-abort" onClick={() => window.location.href = '/chess-game/'}>ABORT MISSION</button>
         </div>
       </aside>
     </main>
@@ -74,7 +74,7 @@ const App = () => {
   requestAnimationFrame(raf);
 
   return (
-    <Router>
+    <Router basename="/chess-game">
       <div className="app">
         <Routes>
           <Route path="/login" element={<Login />} />
