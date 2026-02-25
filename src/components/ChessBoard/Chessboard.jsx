@@ -46,10 +46,15 @@ const Chessboard = () => {
         }
     }
 
+    // Flip the board when playing as black
+    const isFlipped = playerColor === 'b'
+
     // Build the board tiles from the chess.js 2D array
     let tiles = []
-    for (let row = 0; row < 8; row++) {
-        for (let col = 0; col < 8; col++) {
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+            const row = isFlipped ? 7 - i : i
+            const col = isFlipped ? 7 - j : j
             const square = toSquare(col, row)
             const piece = board[row][col]
             const image = piece ? getPieceImage(piece.color, piece.type) : null
@@ -73,17 +78,21 @@ const Chessboard = () => {
         }
     }
 
+    // Coordinate labels — reversed when board is flipped
+    const files = isFlipped ? ['h', 'g', 'f', 'e', 'd', 'c', 'b', 'a'] : ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+    const ranks = isFlipped ? [1, 2, 3, 4, 5, 6, 7, 8] : [8, 7, 6, 5, 4, 3, 2, 1]
+
     return (
         <div className="chess-board-wrapper">
             {/* Board coordinate labels */}
             <div className="board-files">
-                {['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].map(f => (
+                {files.map(f => (
                     <span key={f} className="file-label">{f}</span>
                 ))}
             </div>
             <div className="board-with-ranks">
                 <div className="board-ranks">
-                    {[8, 7, 6, 5, 4, 3, 2, 1].map(r => (
+                    {ranks.map(r => (
                         <span key={r} className="rank-label">{r}</span>
                     ))}
                 </div>
