@@ -126,7 +126,7 @@ const GameOverOverlay = ({ status }) => {
     } else if (status.isStalemate) {
         message = 'Stalemate! It\'s a draw babe 🤝'
     } else if (status.isDraw) {
-        message = 'Draw! 🤝'
+        message = 'Draw! 🤝 '
     }
 
     return (
