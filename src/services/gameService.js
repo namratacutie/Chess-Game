@@ -28,7 +28,7 @@ export const createRoom = async (hostId, hostName) => {
             white: hostName,
             black: null
         },
-        fen: 'start',
+        fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
         history: [],
         createdAt: serverTimestamp(),
         lastMoveAt: serverTimestamp(),

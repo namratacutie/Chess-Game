@@ -10,7 +10,6 @@ import './Chessboard.css'
 import Tiles from '../Tiles/Tiles.jsx'
 import PromotionModal from '../PromotionModal/PromotionModal.jsx'
 import useGameStore, { getPieceImage, toSquare } from '../../store/gameStore.js'
-import useMultiplayer from '../../hooks/useMultiplayer'
 
 const Chessboard = () => {
     const board = useGameStore(s => s.board)
@@ -22,12 +21,10 @@ const Chessboard = () => {
     const selectSquare = useGameStore(s => s.selectSquare)
     const getCheckSquare = useGameStore(s => s.getCheckSquare)
 
-    const roomId = useGameStore(s => s.roomId)
     const playerColor = useGameStore(s => s.playerColor)
     const turn = useGameStore(s => s.turn)
     const isMultiplayer = useGameStore(s => s.isMultiplayer)
-
-    const { makeRemoteMove } = useMultiplayer(roomId)
+    const makeRemoteMove = useGameStore(s => s.makeRemoteMove)
 
     const checkSquare = getCheckSquare()
 

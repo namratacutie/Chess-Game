@@ -2,75 +2,57 @@
  * useMultiplayer.js
  * 
  * Hook to sync game state with Firestore in real-time.
+ * Should only be called ONCE per game room (in GameRoom component).
+ * makeRemoteMove lives in the Zustand store so any component can use it.
  */
 
 import { useEffect } from 'react';
-import { doc, onSnapshot, updateDoc, serverTimestamp, getDoc } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 import { db, auth } from '../services/firebase';
 import useGameStore from '../store/gameStore';
 
 export const useMultiplayer = (roomId) => {
-    const {
-        syncFromRemote,
-        setPlayerColor,
-        setOpponentName,
-    } = useGameStore();
+    const syncFromRemote = useGameStore(s => s.syncFromRemote);
+    const setPlayerColor = useGameStore(s => s.setPlayerColor);
+    const setOpponentName = useGameStore(s => s.setOpponentName);
 
     useEffect(() => {
         if (!roomId) return;
 
         const roomRef = doc(db, 'games', roomId);
 
-        console.log(`Subscribing to room: ${roomId}`);
+        console.log(`[Multiplayer] Subscribing to room: ${roomId}`);
 
         const unsubscribe = onSnapshot(roomRef, (docSnap) => {
-            if (docSnap.exists()) {
-                const data = docSnap.data();
+            if (!docSnap.exists()) return;
 
-                // Sync the FEN and history to our local store
-                syncFromRemote({
-                    fen: data.fen,
-                    history: data.history,
-                    status: data.status,
-                    winner: data.winner,
-                    playerNames: data.playerNames,
-                });
+            const data = docSnap.data();
+            const user = auth.currentUser;
+            if (!user) return;
 
-                // Helper to update opponent info and role
-                const user = auth.currentUser;
-                if (!user) return;
-
-                if (data.players.white === user.uid) {
-                    setPlayerColor('w');
-                    setOpponentName(data.playerNames.black || 'Waiting...');
-                } else if (data.players.black === user.uid) {
-                    setPlayerColor('b');
-                    setOpponentName(data.playerNames.white);
-                }
+            // Determine this player's color FIRST (before sync which could throw)
+            if (data.players.white === user.uid) {
+                setPlayerColor('w');
+                setOpponentName(data.playerNames.black || 'Waiting...');
+            } else if (data.players.black === user.uid) {
+                setPlayerColor('b');
+                setOpponentName(data.playerNames.white || 'Unknown');
             }
+
+            // Then sync the board state from the remote FEN
+            syncFromRemote({
+                fen: data.fen,
+                history: data.history,
+                status: data.status,
+                winner: data.winner,
+            });
         });
 
-        return () => unsubscribe();
+        return () => {
+            console.log(`[Multiplayer] Unsubscribing from room: ${roomId}`);
+            unsubscribe();
+        };
     }, [roomId, syncFromRemote, setPlayerColor, setOpponentName]);
-
-    /**
-     * Updates the remote game state after a local move.
-     */
-    const makeRemoteMove = async (fen, move) => {
-        if (!roomId) return;
-        const roomRef = doc(db, 'games', roomId);
-        const roomSnap = await getDoc(roomRef);
-
-        if (!roomSnap.exists()) return;
-
-        await updateDoc(roomRef, {
-            fen: fen,
-            history: [...(roomSnap.data().history || []), move],
-            lastMoveAt: serverTimestamp()
-        });
-    };
-
-    return { makeRemoteMove };
 };
 
 export default useMultiplayer;

@@ -6,6 +6,8 @@
  */
 
 import { create } from 'zustand';
+import { doc, updateDoc, serverTimestamp, getDoc } from 'firebase/firestore';
+import { db } from '../services/firebase.js';
 import {
     createGame,
     getValidMoves,
@@ -58,7 +60,7 @@ const toSquare = (col, row) => {
 };
 
 const useGameStore = create((set, get) => {
-    const game = createGame();
+    let game = createGame();
 
     return {
         // ─── Core State ─────────────────────────────
@@ -195,7 +197,32 @@ const useGameStore = create((set, get) => {
 
         setOpponentName: (name) => set({ opponentName: name }),
 
-        setRoomId: (id) => set({ roomId: id, isMultiplayer: !!id }),
+        /**
+         * Set the room ID and reset the game for a fresh start
+         */
+        setRoomId: (id) => {
+            if (id) {
+                const newGame = createGame();
+                set({
+                    roomId: id,
+                    isMultiplayer: true,
+                    game: newGame,
+                    board: getBoardState(newGame),
+                    turn: 'w',
+                    moveHistory: [],
+                    capturedPieces: { w: [], b: [] },
+                    selectedSquare: null,
+                    validMoves: [],
+                    lastMove: null,
+                    gameStatus: getGameStatus(newGame),
+                    showPromotion: null,
+                    playerColor: null,
+                    opponentName: 'Waiting...',
+                });
+            } else {
+                set({ roomId: null, isMultiplayer: false });
+            }
+        },
 
         /**
          * Sync local state from remote data (Firestore snapshot)
@@ -205,8 +232,13 @@ const useGameStore = create((set, get) => {
             const { game } = state;
 
             // Only sync if the FEN is different (ignore our own updates)
-            if (data.fen !== game.fen()) {
-                game.load(data.fen);
+            if (data.fen && data.fen !== game.fen()) {
+                try {
+                    game.load(data.fen);
+                } catch (e) {
+                    console.warn('Failed to load remote FEN:', data.fen, e);
+                    return;
+                }
                 const status = getGameStatus(game);
 
                 set({
@@ -217,6 +249,25 @@ const useGameStore = create((set, get) => {
                     lastMove: data.history?.length > 0 ? data.history[data.history.length - 1] : null,
                 });
             }
+        },
+
+        /**
+         * Push a local move to Firestore so the opponent sees it in real-time.
+         * Centralized here so components don't need the useMultiplayer hook.
+         */
+        makeRemoteMove: async (fen, move) => {
+            const { roomId } = get();
+            if (!roomId) return;
+
+            const roomRef = doc(db, 'games', roomId);
+            const roomSnap = await getDoc(roomRef);
+            if (!roomSnap.exists()) return;
+
+            await updateDoc(roomRef, {
+                fen: fen,
+                history: [...(roomSnap.data().history || []), move],
+                lastMoveAt: serverTimestamp(),
+            });
         },
 
         // ─── Computed Helpers ─────────────────────────

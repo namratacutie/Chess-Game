@@ -7,7 +7,6 @@
 import React from 'react'
 import './PromotionModal.css'
 import useGameStore, { getPieceImage } from '../../store/gameStore.js'
-import useMultiplayer from '../../hooks/useMultiplayer'
 
 const PROMOTION_PIECES = ['q', 'r', 'b', 'n']
 const PIECE_NAMES = { q: 'Queen', r: 'Rook', b: 'Bishop', n: 'Knight' }
@@ -15,10 +14,8 @@ const PIECE_NAMES = { q: 'Queen', r: 'Rook', b: 'Bishop', n: 'Knight' }
 const PromotionModal = ({ color }) => {
     const promoteWith = useGameStore(s => s.promoteWith)
     const cancelPromotion = useGameStore(s => s.cancelPromotion)
-    const roomId = useGameStore(s => s.roomId)
     const isMultiplayer = useGameStore(s => s.isMultiplayer)
-
-    const { makeRemoteMove } = useMultiplayer(roomId)
+    const makeRemoteMove = useGameStore(s => s.makeRemoteMove)
 
     const handlePromote = async (piece) => {
         const result = promoteWith(piece);
