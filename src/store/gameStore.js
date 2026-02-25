@@ -198,30 +198,11 @@ const useGameStore = create((set, get) => {
         setOpponentName: (name) => set({ opponentName: name }),
 
         /**
-         * Set the room ID and reset the game for a fresh start
+         * Set the room ID to enable multiplayer mode.
+         * Game state is reset inside useMultiplayer before subscribing.
          */
         setRoomId: (id) => {
-            if (id) {
-                const newGame = createGame();
-                set({
-                    roomId: id,
-                    isMultiplayer: true,
-                    game: newGame,
-                    board: getBoardState(newGame),
-                    turn: 'w',
-                    moveHistory: [],
-                    capturedPieces: { w: [], b: [] },
-                    selectedSquare: null,
-                    validMoves: [],
-                    lastMove: null,
-                    gameStatus: getGameStatus(newGame),
-                    showPromotion: null,
-                    playerColor: null,
-                    opponentName: 'Waiting...',
-                });
-            } else {
-                set({ roomId: null, isMultiplayer: false });
-            }
+            set({ roomId: id, isMultiplayer: !!id });
         },
 
         /**
@@ -246,6 +227,8 @@ const useGameStore = create((set, get) => {
                     turn: status.turn,
                     moveHistory: getVerboseHistory(game),
                     gameStatus: status,
+                    selectedSquare: null,
+                    validMoves: [],
                     lastMove: data.history?.length > 0 ? data.history[data.history.length - 1] : null,
                 });
             }

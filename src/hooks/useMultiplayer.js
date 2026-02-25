@@ -15,9 +15,14 @@ export const useMultiplayer = (roomId) => {
     const syncFromRemote = useGameStore(s => s.syncFromRemote);
     const setPlayerColor = useGameStore(s => s.setPlayerColor);
     const setOpponentName = useGameStore(s => s.setOpponentName);
+    const resetGame = useGameStore(s => s.resetGame);
 
     useEffect(() => {
         if (!roomId) return;
+
+        // Reset to a clean game state BEFORE subscribing,
+        // so the Firestore snapshot always writes into a fresh game.
+        resetGame();
 
         const roomRef = doc(db, 'games', roomId);
 
@@ -52,7 +57,7 @@ export const useMultiplayer = (roomId) => {
             console.log(`[Multiplayer] Unsubscribing from room: ${roomId}`);
             unsubscribe();
         };
-    }, [roomId, syncFromRemote, setPlayerColor, setOpponentName]);
+    }, [roomId, syncFromRemote, setPlayerColor, setOpponentName, resetGame]);
 };
 
 export default useMultiplayer;
