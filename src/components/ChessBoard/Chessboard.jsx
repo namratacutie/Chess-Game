@@ -115,7 +115,7 @@ const GameOverOverlay = ({ status }) => {
     if (status.isCheckmate) {
         message = `Checkmate! ${status.turn === 'w' ? 'Black' : 'White'} wins! 🏆`
     } else if (status.isStalemate) {
-        message = 'Stalemate! It\'s a draw 🤝'
+        message = 'Stalemate! It\'s a draw babe 🤝'
     } else if (status.isDraw) {
         message = 'Draw! 🤝'
     }
