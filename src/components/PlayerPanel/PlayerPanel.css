@@ -34,12 +34,50 @@
 }
 
 .player-status {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 5px;
     font-size: 8px;
     text-transform: uppercase;
     letter-spacing: 1px;
     opacity: 0.7;
     color: var(--stardust-gold);
+}
+
+.presence-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.presence--online {
+    background: #22c55e;
+    box-shadow: 0 0 6px #22c55e88;
+    animation: pulse-green 2s infinite;
+}
+
+.presence--away {
+    background: #f59e0b;
+    box-shadow: 0 0 6px #f59e0b88;
+}
+
+.presence--offline {
+    background: #ef4444;
+    box-shadow: 0 0 4px #ef444488;
+}
+
+@keyframes pulse-green {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
 }
 
 .captured-box {

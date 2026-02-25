@@ -78,6 +78,7 @@ const useGameStore = create((set, get) => {
         // ─── Multiplayer State ──────────────────────
         playerColor: null, // 'w' or 'b'
         opponentName: 'Waiting...',
+        opponentOnline: 'offline', // 'online', 'away', 'offline'
         userRole: 'viewer', // 'white', 'black', 'viewer'
         isMultiplayer: false,
         roomId: null,
@@ -196,6 +197,8 @@ const useGameStore = create((set, get) => {
         setPlayerColor: (color) => set({ playerColor: color, userRole: color === 'w' ? 'white' : 'black', isMultiplayer: true }),
 
         setOpponentName: (name) => set({ opponentName: name }),
+
+        setOpponentOnline: (status) => set({ opponentOnline: status }),
 
         /**
          * Set the room ID to enable multiplayer mode.
